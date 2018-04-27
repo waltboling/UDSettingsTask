@@ -14,25 +14,25 @@ class ViewController: UIViewController {
     @IBOutlet weak var sliderValue: UITextField!
     @IBOutlet weak var enabledValue: UITextField!
     
-    
+    struct SettingProperties {
+        static let listName = "ListName"
+        static let slider = "Slider"
+        static let enabled = "Enabled"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let userDefaults = UserDefaults.standard
-        //let settingsSlider =
-        let toggleButton = userDefaults.bool(forKey: "Enabled")
-        let sliderString = String(describing: userDefaults.float(forKey: "Slider"))
         
-        listName.text = userDefaults.object(forKey: "ListName") as? String
-        sliderValue.text = sliderString
+        listName.text = userDefaults.object(forKey: SettingProperties.listName) as? String
+        sliderValue.text = String(describing: userDefaults.float(forKey: SettingProperties.slider))
         
-        if toggleButton == true {
-            return enabledValue.text = "On"
+        if userDefaults.bool(forKey: SettingProperties.enabled) == true {
+            enabledValue.text = "On"
         } else {
-            return enabledValue.text = "Off"
+            enabledValue.text = "Off"
         }
-        
     }
 }
 
