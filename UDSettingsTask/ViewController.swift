@@ -9,7 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    let userDefaults = UserDefaults.standard
+    
     @IBOutlet weak var listName: UITextField!
     @IBOutlet weak var sliderValue: UITextField!
     @IBOutlet weak var enabledValue: UITextField!
@@ -20,11 +22,7 @@ class ViewController: UIViewController {
         static let enabled = "Enabled"
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let userDefaults = UserDefaults.standard
-        
+    func loadSettings() {
         listName.text = userDefaults.object(forKey: SettingProperties.listName) as? String
         sliderValue.text = String(describing: userDefaults.float(forKey: SettingProperties.slider))
         
@@ -34,5 +32,23 @@ class ViewController: UIViewController {
             enabledValue.text = "Off"
         }
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        loadSettings()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationDidBecomeActive(notification:)),
+            name: NSNotification.Name.UIApplicationDidBecomeActive,
+            object: nil)
+    }
+    
+    @objc func applicationDidBecomeActive(notification: NSNotification) {
+        loadSettings()
+    }
+    
+    
 }
 
